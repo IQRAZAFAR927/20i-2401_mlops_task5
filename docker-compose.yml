@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  frontend: 
+    build: src
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    build: backend
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_URI=mongodb+srv://IQRA_ZAFAR:1234@cluster0.kwxc3ml.mongodb.net/
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo
+    volumes:
+      - mongo-db:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo-db:
